@@ -1,0 +1,3 @@
+add_subdirectory(app)
+add_subdirectory(audio_file)
+add_subdirectory(audio_file_reader)
