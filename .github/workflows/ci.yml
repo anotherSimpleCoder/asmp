@@ -9,23 +9,20 @@ jobs:
             -   name: Checkout code
                 uses: actions/checkout@v4
 
-            -   name: Set up vcpkg
-                uses: lukka/setup-vcpkg@v1
+            -   uses: lukka/get-cmake@latest
+
+            -   name: Restore vcpkg
+                uses: actions/cache@v4
                 with:
-                  vcpkgDirectory: '${{ runner.workspace }}/.vcpkg'
-                  cleanAfterBuild: true
+                  path: |
+                    ${{ env._VCPKG_ }}
+                    !${{ env._VCPKG_ }}/buildtrees
+                    !${{ env._VCPKG_ }}/packages
+                    !${{ env._VCPKG_ }}/downloads
+                    !${{ env._VCPKG_ }}/installed
 
-            -   name: Set up CMake
-                uses: actions/setup-cmake@v3
-                with:
-                    cmake-version: '3.30'
-
-            -   name: Install dependencies
-                run: |
-                    ./vcpkg/vcpkg install --feature-flags=manifests
-
-            -   name: Configure cmake
-                run: cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=./vcpkg/scripts/buildsystems/vcpkg.cmake
+                  key: |
+                    ${{ hashFiles( '.git/modules/vcpkg/HEAD' )}}
 
             -   name: Build
                 run: cmake --build build
