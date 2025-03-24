@@ -22,4 +22,4 @@ jobs:
       uses: lukka/run-vcpkg@v11
 
     - name: Install vcpkg packages
-      uses: ./vcpkg/install
+      uses: ./vcpkg install
