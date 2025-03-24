@@ -20,3 +20,6 @@ jobs:
     
     - name: Setup anew (or from cache) vcpkg (and does not build any package)
       uses: lukka/run-vcpkg@v11
+
+    - name: Install vcpkg packages
+      uses: ./vcpkg/install
