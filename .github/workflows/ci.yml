@@ -10,13 +10,18 @@ jobs:
                 uses: actions/checkout@v4
 
             -   name: Set up vcpkg
-                uses: lukka/get-cmake@latest
+                uses: lukka/setup-vcpkg@v1
+                with:
+                  vcpkgDirectory: '${{ runner.workspace }}/.vcpkg'
+                  cleanAfterBuild: true
+
+            -   name: Set up CMake
+                uses: actions/setup-cmake@v3
                 with:
                     cmake-version: '3.30'
 
             -   name: Install dependencies
                 run: |
-                    ./vcpkg/bootstrap-vcpkg.sh
                     ./vcpkg/vcpkg install --feature-flags=manifests
 
             -   name: Configure cmake
