@@ -9,7 +9,7 @@
 #include <exception>
 
 class InvalidAudioFileDataException : public std::exception {
-      std::string message;
+    std::string message;
 
     public:
       explicit InvalidAudioFileDataException()
