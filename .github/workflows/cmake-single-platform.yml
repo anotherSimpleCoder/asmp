@@ -24,5 +24,8 @@ jobs:
     - name: Install vcpkg packages
       run: vcpkg install
 
-    - name: Build
+    - name: Configure CMake
       run: cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=./vcpkg/scripts/buildsystems/vcpkg.cmake
+
+    - name: Buld
+      run: cmake --build build
