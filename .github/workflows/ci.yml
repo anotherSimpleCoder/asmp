@@ -1,0 +1,29 @@
+name: Run tests
+on: push
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+
+        steps:
+            -   name: Checkout code
+                uses: actions/checkout@v4
+
+            -   name: Set up vcpkg
+                uses: lukka/get-cmake@v3
+                with:
+                    cmake-version: '3.30'
+
+            -   name: Install dependencies
+                run: |
+                    ./vcpkg/bootstrap-vcpkg.sh
+                    ./vcpkg/vcpkg install --feature-flags=manifests
+
+            -   name: Configure cmake
+                run: cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=./vcpkg/scripts/buildsystems/vcpkg.cmake
+
+            -   name: Build
+                run: cmake --build build
+
+            -   name: Run tests
+                run: ctest --test-dir build
