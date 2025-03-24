@@ -14,24 +14,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    
-    - uses: lukka/get-cmake@latest
-    
-    - name: Setup anew (or from cache) vcpkg (and does not build any package)
-      uses: lukka/run-vcpkg@v11
+    - name: Checkout
+      uses: actions/checkout@v4
 
-    - name: Install vcpkg packages
-      run: vcpkg install
+    - name: Install cmake
+      uses: lukka/get-cmake@latest
 
-    - name: Configure CMake
-      run: cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=./vcpkg/scripts/buildsystems/vcpkg.cmake
-
-    - name: Buld
-      run: cmake --build build
-
-    - name: Run tests
+    - name: Get vcpkg
       run: |
-        cd build
-        ctest
+        git clone https://github.com/microsoft/vcpkg.git
+        cd vcpkg
+        ./bootstrap-vcpkg.sh
 
+    - name: Install dependencies
+      run: ./vcpkg/vcpkg install
+      
