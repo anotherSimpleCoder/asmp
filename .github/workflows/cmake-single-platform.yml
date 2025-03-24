@@ -28,4 +28,7 @@ jobs:
 
     - name: Install dependencies
       run: ./vcpkg/vcpkg install
+
+    - name: Link vcpkg to CMake and configure
+      run: cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=./vcpkg/scripts/buildsystems/vcpkg.cmake
       
