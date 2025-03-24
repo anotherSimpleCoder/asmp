@@ -6,4 +6,6 @@ set(CMAKE_CXX_STANDARD 20)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 add_subdirectory(src)
+
+enable_testing()
 add_subdirectory(tests)
