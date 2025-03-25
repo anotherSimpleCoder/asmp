@@ -8,11 +8,11 @@
 #include <string>
 #include <exception>
 
-class InvalidAudioFileDataException : public std::exception {
+class InvalidAudioFileException : public std::exception {
     std::string message;
 
     public:
-      explicit InvalidAudioFileDataException()
+      explicit InvalidAudioFileException()
         : message("The given AudioFile Data is invalid!") {}
 };
 #endif //INVALIDAUDIOFILEDATAEXCEPTION_H

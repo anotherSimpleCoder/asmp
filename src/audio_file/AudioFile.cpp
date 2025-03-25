@@ -1,11 +1,13 @@
 #include "AudioFile.h"
-#include "InvalidAudioFileDataException.h"
 
-AudioFile::AudioFile(std::string filename, float* data) {
-    if (data == nullptr) {
-       throw InvalidAudioFileDataException();
+#include <utility>
+#include "InvalidAudioFileException.h"
+
+AudioFile::AudioFile(std::string filename, std::vector<float> data) {
+    if (filename.empty()) {
+        throw InvalidAudioFileException();
     }
 
-    this->filename = filename;
-    this->data = data;
+    this->filename = std::move(filename);
+    this->data = std::move(data);
 }
