@@ -1,22 +1,24 @@
-#include <rtaudio/RtAudio.h>
+#include <portaudio.h>
+#include <iostream>
 
 #include "AudioFilePlayer.h"
 #include "InvalidAudioFileException.h"
 
-int audioFileCallback(
-    void *outputBuffer,
+PaError audioFileCallback(
+    const void *outputBuffer,
     void *inputBuffer,
-    unsigned int nBufferFrames,
-    double streamTime,
-    RtAudioStreamStatus status,
-    const AudioFile *userData
+    unsigned long nBufferFrames,
+    const PaStreamCallbackTimeInfo *timeinfo,
+    PaStreamCallbackFlags statusFlags,
+    void *userData
 ) {
-    float* floatOutputBuffer = static_cast<float*>(outputBuffer);
-    std::vector<float> fileAudio = userData->data;
+    auto* floatOutputBuffer = (float*)(outputBuffer);
+    auto* audioFileData = static_cast<AudioFile *>(userData);
+    std::vector<float> fileAudio = audioFileData->data;
 
     for (int i = 0; i < nBufferFrames; i++) {
         for (auto sample: fileAudio) {
-            *floatOutputBuffer++ = sample;
+            floatOutputBuffer[i] = sample;
         }
     }
     return 0;
@@ -27,38 +29,41 @@ void AudioFilePlayer::play(AudioFile *fileToPlay) {
         throw InvalidAudioFileException();
     }
 
-    RtAudio *dac = new RtAudio();
-    dac->setErrorCallback([](RtAudioErrorType type,const std::string &errorText ) {
-        throw ASMPException("Error while setting up audio drivers: " + errorText);
-    });
+    auto err = Pa_Initialize();
+    if (err != paNoError ) {
+        throw ASMPException("Error while setting up audio drivers: " + std::string(Pa_GetErrorText(err)));
+    }
 
-    RtAudio::StreamParameters parameters {
-        dac->getDefaultOutputDevice(),
+    PaStream *stream;
+    err = Pa_OpenDefaultStream(
+        &stream,
+        0,
         2,
-        0
-    };
-
-    dac->openStream(
-        &parameters,
-        nullptr,
-        RTAUDIO_FLOAT32,
+        paFloat32,
         this->sampleRate,
-        &(this->bufferSize),
-        reinterpret_cast<RtAudioCallback>(&audioFileCallback),
+        this->bufferSize,
+        audioFileCallback,
         fileToPlay
     );
-    dac->startStream();
+    if (err != paNoError) {
+        throw ASMPException("Error while opening audio stream: " + std::string(Pa_GetErrorText(err)));
+    }
+
+    err = Pa_StartStream(stream);
+    if (err != paNoError) {
+        throw ASMPException("Error while starting playback: " + std::string(Pa_GetErrorText(err)));
+    }
 
     std::cin.get();
 
-    if (dac->isStreamRunning()) {
-        dac->stopStream();
+    err = Pa_StopStream(stream);
+    if (err != paNoError) {
+        throw ASMPException("Error while stopping playback: " + std::string(Pa_GetErrorText(err)));
     }
 
-    if (dac->isStreamOpen()) {
-        dac->closeStream();
+    err = Pa_Terminate();
+    if (err != paNoError ) {
+        throw ASMPException("Error while shutting down audio drivers: " + std::string(Pa_GetErrorText(err)));
     }
-
-    delete dac;
 }
 
