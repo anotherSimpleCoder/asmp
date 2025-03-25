@@ -1,0 +1,50 @@
+name: Build binaries
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  BUILD_TYPE: Debug
+
+jobs:
+  build:
+    runs-on: ${{matrix.os}}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install cmake
+        uses: lukka/get-cmake@latest
+
+      - name: Get vcpkg
+        run: |
+          git clone https://github.com/microsoft/vcpkg.git
+          cd vcpkg
+          ./bootstrap-vcpkg.sh
+
+      - name: Install dependencies
+        run: ./vcpkg/vcpkg install
+
+      - name: Link vcpkg to CMake and configure
+        run: cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=./vcpkg/scripts/buildsystems/vcpkg.cmake
+
+      - name: Build
+        run: cmake --build build
+
+      - name: Run tests
+        run: |
+          cd build
+          ctest --output-on-failure
+
+      - name: Upload binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: binaries-${{ matrix.os }}
+          path: build/src/app
