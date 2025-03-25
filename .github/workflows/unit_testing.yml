@@ -11,10 +11,7 @@ env:
 
 jobs:
   build:
-    runs-on: ${{matrix.os}}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest]
+    runs-on: pi-runner
 
     steps:
     - name: Checkout
