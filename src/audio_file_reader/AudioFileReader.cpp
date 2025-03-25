@@ -1,4 +1,8 @@
+#include <sndfile.hh>
+
 #include "AudioFileReader.h"
+#include "AudioFileNotFoundException.h"
+#include "NoAudioFileException.h"
 
 AudioFile AudioFileReader::read(const std::string path) {
     if (!fs::exists(path)) {
@@ -6,13 +10,12 @@ AudioFile AudioFileReader::read(const std::string path) {
     }
 
     auto file = SndfileHandle(path);
-    bool isValidFormat = file.formatCheck(file.format(), file.channels(), file.samplerate());
+    bool isValidFormat = SndfileHandle::formatCheck(file.format(), file.channels(), file.samplerate());
     if (!isValidFormat) {
-
+        throw NoAudioFileException(path);
     }
 
-
-    float* buffer = new float[file.frames()];
+    auto buffer = new float[file.frames()];
     file.read(buffer, file.frames());
 
     return {path, buffer};
