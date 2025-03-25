@@ -4,6 +4,7 @@
 
 #ifndef AUDIOFILE_H
 #define AUDIOFILE_H
+
 #include <string>
 #include <vector>
 
@@ -13,4 +14,4 @@ class AudioFile {
         std::vector<float> data;
         AudioFile(std::string filename, std::vector<float> data);
 };
-#endif //AUDIOFILE_H
+#endif

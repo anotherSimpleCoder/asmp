@@ -6,13 +6,11 @@
 #define INVALIDAUDIOFILEDATAEXCEPTION_H
 
 #include <string>
-#include <exception>
+#include "ASMPException.h"
 
-class InvalidAudioFileException : public std::exception {
-    std::string message;
-
-    public:
-      explicit InvalidAudioFileException()
-        : message("The given AudioFile Data is invalid!") {}
+class InvalidAudioFileException : public ASMPException {
+public:
+  explicit InvalidAudioFileException()
+    : ASMPException("The given AudioFile Data is invalid!") {}
 };
-#endif //INVALIDAUDIOFILEDATAEXCEPTION_H
+#endif

@@ -8,11 +8,9 @@
 #include <exception>
 #include <string>
 
-class NoAudioFileException : public std::exception {
-    std::string message;
-
-    public:
-         explicit NoAudioFileException(std::string filename)
-             : message("The " + filename + " is not an audio file!") {}
+class NoAudioFileException : public ASMPException {
+public:
+     explicit NoAudioFileException(const std::string& filename)
+         : ASMPException("The " + filename + " is not an audio file!") {}
 };
-#endif //NOAUDIOFILEEXCEPTION_H
+#endif
