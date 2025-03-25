@@ -1,4 +1,6 @@
-include_directories(${CMAKE_SOURCE_DIR}/include/audio_file)
+include_directories(
+        ${CMAKE_SOURCE_DIR}/include/audio_file
+)
 
 add_executable(AudioFileTests AudioFileTests.cpp)
 target_link_libraries(AudioFileTests

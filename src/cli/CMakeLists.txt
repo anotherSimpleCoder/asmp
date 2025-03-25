@@ -7,12 +7,14 @@ include_directories(
         ${CMAKE_SOURCE_DIR}/include/cli
 )
 
-add_executable(asmp main.cpp)
-target_link_libraries(asmp
-        audio_file
-        audio_file_player
-        audio_file_reader
-        backend
-        cli
-        ui
+add_library(cli
+        CLI.cpp
+)
+
+target_link_libraries(cli
+    audio_file
+    audio_file_reader
+    audio_file_player
+    backend
+    ui
 )

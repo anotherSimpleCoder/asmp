@@ -10,5 +10,6 @@ add_library(audio_file_reader
 )
 
 target_link_libraries(audio_file_reader
+        audio_file
         SndFile::sndfile
 )
