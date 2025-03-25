@@ -32,10 +32,6 @@ void AudioFilePlayer::play(AudioFile *fileToPlay) {
         throw ASMPException("Error while setting up audio drivers: " + errorText);
     });
 
-    for (const auto id: dac->getDeviceIds()) {
-        std::cout << id << std::endl;
-    }
-
     RtAudio::StreamParameters parameters {
         dac->getDefaultOutputDevice(),
         2,
@@ -51,13 +47,18 @@ void AudioFilePlayer::play(AudioFile *fileToPlay) {
         reinterpret_cast<RtAudioCallback>(&audioFileCallback),
         fileToPlay
     );
+    dac->startStream();
 
     std::cin.get();
 
+    if (dac->isStreamRunning()) {
+        dac->stopStream();
+    }
 
     if (dac->isStreamOpen()) {
         dac->closeStream();
     }
+
     delete dac;
 }
 
