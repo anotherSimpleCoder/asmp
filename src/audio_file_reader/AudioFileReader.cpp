@@ -18,5 +18,8 @@ AudioFile AudioFileReader::read(const std::string path) {
     auto buffer = new float[file.frames()];
     file.read(buffer, file.frames());
 
-    return {path, buffer};
+    std::vector audioData(buffer, buffer + file.frames());
+    delete buffer;
+
+    return {path, audioData};
 }

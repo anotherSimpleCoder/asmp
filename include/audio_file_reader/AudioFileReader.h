@@ -12,4 +12,4 @@ class AudioFileReader {
   public:
     AudioFile read(std::string path);
 };
-#endif AUDIOFILEREADER_H
+#endif
