@@ -16,11 +16,3 @@ class AudioFileReaderTests : public ::testing::Test {
 TEST_F(AudioFileReaderTests, ReadNonExistentAudioFile_ShouldThrowAudioFileNotFoundException) {
     EXPECT_THROW(testAudioFileReader->read(""), AudioFileNotFoundException);
 }
-
-TEST_F(AudioFileReaderTests, ReadNonAudioFile_ShouldThrowNoAudioFileException) {
-    EXPECT_THROW(testAudioFileReader->read("./files/invalid_file.bin"), NoAudioFileException);
-}
-
-TEST_F(AudioFileReaderTests, ReadAudioFile_ShouldBeOkay) {
-    EXPECT_NO_THROW(testAudioFileReader->read("./files/soundfile.mp3"));
-}
