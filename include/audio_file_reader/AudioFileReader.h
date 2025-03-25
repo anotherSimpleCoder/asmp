@@ -9,7 +9,7 @@
 namespace fs = std::filesystem;
 
 class AudioFileReader {
-  public:
+public:
     AudioFile read(std::string path);
 };
 #endif

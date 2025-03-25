@@ -9,9 +9,10 @@
 #include <vector>
 
 class AudioFile {
-    public:
-        std::string filename;
-        std::vector<float> data;
-        AudioFile(std::string filename, std::vector<float> data);
+public:
+    std::string filename;
+    std::vector<float> data;
+
+    AudioFile(std::string filename, std::vector<float> data);
 };
 #endif
