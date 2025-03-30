@@ -11,7 +11,7 @@ void setBuildStatus(String message, String state) {
 pipeline {
     agent {
         docker {
-            image 'kitware/cmake:ci-hip6.3-x86_64-2025-02-14'
+            image 'kitware/cmake:ci-gcc_cxx_modules-x86_64-2024-12-23'
             args '-u root:root'
         }
     }
