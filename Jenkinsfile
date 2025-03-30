@@ -20,8 +20,7 @@ pipeline {
         stage('Get vcpkg') {
             steps {
                 sh 'git clone https://github.com/microsoft/vcpkg.git'
-                sh 'cd vcpkg'
-                sh './bootstrap-vcpkg.sh'
+                sh '.vcpkg/bootstrap-vcpkg.sh'
             }
         }
 
