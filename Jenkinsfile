@@ -25,7 +25,7 @@ pipeline {
                     }
                 }
 
-                sh '.vcpkg/bootstrap-vcpkg.sh'
+                sh './vcpkg/bootstrap-vcpkg.sh'
             }
         }
 
