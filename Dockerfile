@@ -12,4 +12,3 @@ RUN cmake --version
 RUN apt install clang build-essential git curl pkg-config -y
 RUN git clone https://github.com/microsoft/vcpkg.git
 RUN ./vcpkg/bootstrap-vcpkg.sh
-RUN alias vcpkg='/vcpkg/vcpkg'

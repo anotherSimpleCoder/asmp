@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Install dependencies') {
             steps {
-                sh 'vcpkg install'
+                sh '/vcpkg/vcpkg install'
             }
         }
 
