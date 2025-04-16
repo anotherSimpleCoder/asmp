@@ -4,14 +4,15 @@ pipeline {
     stages {
         stage('Install dependencies') {
             steps {
-                sh 'pwd'
-                sh '/vcpkg/vcpkg install'
+                sh 'git clone https://github.com/microsoft/vcpkg.git'
+                sh './vcpkg/bootstrap-vcpkg.sh'
+                sh './vcpkg/vcpkg install'
             }
         }
 
         stage('Connect vcpkg to CMake') {
             steps {
-                sh 'cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake'
+                sh 'cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=./vcpkg/scripts/buildsystems/vcpkg.cmake'
             }
         }
 
