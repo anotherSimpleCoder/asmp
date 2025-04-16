@@ -9,9 +9,6 @@ RUN mv cmake-3.30.0-linux-x86_64 /opt/cmake-3.30.0
 RUN ln -sf  /opt/cmake-3.30.0/bin/*    /usr/bin/
 RUN cmake --version
 
-WORKDIR /
-RUN mkdir asmp
-WORKDIR asmp
 COPY . .
 RUN apt install clang build-essential git curl pkg-config -y
 RUN git clone https://github.com/microsoft/vcpkg.git
