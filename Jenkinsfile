@@ -1,19 +1,10 @@
-void setBuildStatus(String message, String state) {
-  step([
-      $class: "GitHubCommitStatusSetter",
-      reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/anotherSimpleCoder/cuerate"],
-      contextSource: [$class: "ManuallyEnteredCommitContextSource", context: "Run Tests"],
-      errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
-      statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
-  ]);
-}
-
 pipeline {
     agent { dockerfile true }
 
     stages {
         stage('Build') {
             steps {
+                sh 'cmake --version'
                 sh 'ls'
                 sh 'cmake --build build'
             }
@@ -23,14 +14,6 @@ pipeline {
             steps {
                 sh 'cd build'
                 sh 'ctest --output-on-failure'
-            }
-        }
-
-        stage('Set GitHub status') {
-            agent any
-
-            steps {
-                setBuildStatus("Test complete", "SUCCESS");
             }
         }
     }
