@@ -5,7 +5,7 @@ pipeline {
         stage('Install dependencies') {
             steps {
                 script {
-                    if(!fileExists('/vcpkg')) {
+                    if(!fileExists('vcpkg')) {
                         sh 'git clone https://github.com/microsoft/vcpkg.git'
                     }
 
