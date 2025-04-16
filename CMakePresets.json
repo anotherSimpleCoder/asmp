@@ -4,11 +4,11 @@
     {
       "name": "debug",
       "displayName": "Debug",
-      "binaryDir": "${sourceDir}/cmake-build-debug",
+      "binaryDir": "${sourceDir}/build",
       "generator": "Unix Makefiles",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_TOOLCHAIN_FILE": "/home/amsakan/.vcpkg-clion/vcpkg/scripts/buildsystems/vcpkg.cmake"
+        "CMAKE_TOOLCHAIN_FILE": "./vcpkg/scripts/buildsystems/vcpkg.cmake"
       }
     }
   ]

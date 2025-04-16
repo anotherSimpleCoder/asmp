@@ -11,36 +11,12 @@ void setBuildStatus(String message, String state) {
 pipeline {
     agent {
         docker {
-            image 'ghcr.io/anothersimplecoder/cpp_build_linux_x86_64:latest'
+            dockerfile true
             args '-u root:root'
         }
     }
 
     stages {
-        stage('Get vcpkg') {
-            steps {
-                script {
-                    if(!fileExists('./vcpkg')) {
-                        sh 'git clone https://github.com/microsoft/vcpkg.git'
-                    }
-                }
-
-                sh './vcpkg/bootstrap-vcpkg.sh'
-            }
-        }
-
-        stage('Install dependencies') {
-            steps {
-                sh './vcpkg/vcpkg install'
-            }
-        }
-
-        stage('Link vcpkg to CMake and configure') {
-            steps {
-                sh 'cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=./vcpkg/scripts/buildsystems/vcpkg.cmake'
-            }
-        }
-
         stage('Build') {
             steps {
                 sh 'cmake --build build'
