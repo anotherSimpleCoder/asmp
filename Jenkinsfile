@@ -9,12 +9,7 @@ void setBuildStatus(String message, String state) {
 }
 
 pipeline {
-    agent {
-        docker {
-            dockerfile true
-            args '-u root:root'
-        }
-    }
+    agent { dockerfile true }
 
     stages {
         stage('Build') {
