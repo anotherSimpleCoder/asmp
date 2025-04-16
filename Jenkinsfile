@@ -1,5 +1,5 @@
 pipeline {
-    agent macos
+    agent { dockerfile true }
 
     stages {
         stage('Install dependencies') {
