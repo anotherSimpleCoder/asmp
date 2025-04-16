@@ -24,8 +24,9 @@ pipeline {
 
         stage('Run tests') {
             steps {
-                sh 'cd build'
-                sh 'ctest --output-on-failure'
+                dir('build') {
+                    sh 'ctest --output-on-failure'
+                }
             }
         }
     }
