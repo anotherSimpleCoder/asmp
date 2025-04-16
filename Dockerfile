@@ -9,9 +9,7 @@ RUN mv cmake-3.30.0-linux-x86_64 /opt/cmake-3.30.0
 RUN ln -sf  /opt/cmake-3.30.0/bin/*    /usr/bin/
 RUN cmake --version
 
-COPY . .
 RUN apt install clang build-essential git curl pkg-config -y
 RUN git clone https://github.com/microsoft/vcpkg.git
 RUN ./vcpkg/bootstrap-vcpkg.sh
-RUN ./vcpkg/vcpkg install
-RUN cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=./vcpkg/scripts/buildsystems/vcpkg.cmake
+RUN alias vcpkg = /vcpkg/vcpkg
