@@ -14,6 +14,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
+                sh 'ls'
                 sh 'cmake --build build'
             }
         }
