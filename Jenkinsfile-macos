@@ -19,20 +19,20 @@ pipeline {
 
         stage('Connect vcpkg to CMake') {
             steps {
-                sh 'cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=./vcpkg/scripts/buildsystems/vcpkg.cmake'
+                sh '/usr/local/bin/cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=./vcpkg/scripts/buildsystems/vcpkg.cmake'
             }
         }
 
         stage('Build') {
             steps {
-                sh 'cmake --build build'
+                sh '/usr/local/bin/cmake --build build'
             }
         }
 
         stage('Run tests') {
             steps {
                 dir('build') {
-                    sh 'ctest --output-on-failure'
+                    sh '/usr/local/bin/ctest --output-on-failure'
                 }
             }
         }
