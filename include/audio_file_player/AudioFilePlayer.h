@@ -5,6 +5,8 @@
 #ifndef AUDIOFILEPLAYER_H
 #define AUDIOFILEPLAYER_H
 
+#include <RtAudio.h>
+
 #include "AudioFile.h"
 
 class AudioFilePlayer {
