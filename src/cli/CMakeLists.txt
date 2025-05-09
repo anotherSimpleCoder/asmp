@@ -7,11 +7,15 @@ include_directories(
         ${CMAKE_SOURCE_DIR}/include/cli
 )
 
+find_package(RtAudio CONFIG REQUIRED)
+
 add_library(cli
         CLI.cpp
 )
 
 target_link_libraries(cli
+    PRIVATE
+    RtAudio::rtaudio
     audio_file
     audio_file_reader
     audio_file_player

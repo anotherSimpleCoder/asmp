@@ -11,8 +11,8 @@
 class AudioFile {
 public:
     std::string filename;
-    std::vector<float> data;
+    float* data;
 
-    AudioFile(std::string filename, std::vector<float> data);
+    AudioFile(std::string filename, float* data);
 };
 #endif
