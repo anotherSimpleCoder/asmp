@@ -3,14 +3,14 @@
 #include "InvalidAudioFileException.h"
 
 TEST(AudioFileTests, CreateAudioFile_ShouldNotBeNull) {
-    std::vector<float> testAudioData(10);
+    float testAudioData[10] = {0};
     const auto testAudioFile = new AudioFile("testFile.wav", testAudioData);
 
     EXPECT_NE(testAudioFile, nullptr);
 }
 
 TEST(AudioFileTests, CreateAudioFile_ShouldNotBeEqual) {
-    std::vector<float> testAudioData(10);
+    float testAudioData[10] = {0};
     const auto testAudioFile = new AudioFile("testFile.wav", testAudioData);
 
     EXPECT_NE(testAudioFile, nullptr);
@@ -19,7 +19,7 @@ TEST(AudioFileTests, CreateAudioFile_ShouldNotBeEqual) {
 }
 
 TEST(AudioFileTests, CreateAudioFileWithNoName_ShouldThrowInvalidAudioFileException) {
-    const std::vector<float> testAudioData(10);
+    float testAudioData[10] = {0};
 
     EXPECT_THROW(AudioFile("", testAudioData), InvalidAudioFileException);
 }

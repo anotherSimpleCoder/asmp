@@ -4,7 +4,7 @@
 #include "InvalidAudioFileException.h"
 
 TEST(AudioFilePlayerTests, Runs) {
-    std::vector<float> data;
+    float data[10] = {0};
     auto* testFile = new AudioFile("test.wav", data);
     AudioFilePlayer testPlayer{};
 
