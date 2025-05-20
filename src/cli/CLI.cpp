@@ -2,7 +2,7 @@
 #include <iostream>
 
 #include "CLI.h"
-#include "ASMPException.h"
+#include "exception/ASMPException.h"
 
 void CLI::run(int argc, char** argv) {
     try {

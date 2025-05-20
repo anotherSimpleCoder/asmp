@@ -6,7 +6,7 @@
 #define AUDIOFILENOTFOUNDEXCEPTION_H
 
 #include <string>
-#include "ASMPException.h"
+#include "exception/ASMPException.h"
 
 class AudioFileNotFoundException : public ASMPException {
 public:

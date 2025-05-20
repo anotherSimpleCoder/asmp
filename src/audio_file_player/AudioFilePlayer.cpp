@@ -1,58 +1,77 @@
+#include <iostream>
+#include <portaudio.h>
 #include "AudioFilePlayer.h"
-#include "InvalidAudioFileException.h"
-#include "NoDevicesAvailableException.h"
+#include "AudioEngineException.h"
 
-int playback(
-    void *outputBuffer,
-    void *inputBuffer,
-    unsigned int nBufferFrames,
-    double streamTime,
-    RtAudioStreamStatus status,
-    void *userData
+int callback(
+    const void* inputBuffer,
+    void* outputBuffer,
+    unsigned long framesPerBuffer,
+    const PaStreamCallbackTimeInfo* timeInfo,
+    PaStreamCallbackFlags statusFlags,
+    void* userData
 ) {
-    unsigned int i, j;
-    float *buffer = (float *) outputBuffer;
-    float *audioData = (float *) userData;
+    auto audioFile = (AudioFile*) userData;
+    auto outputFloatBuffer = (float*) outputBuffer;
 
-    for ( i=0; i<nBufferFrames; i++ ) {
-        *buffer++ = audioData[i];
+    for (int i = 0; i < framesPerBuffer; i++) {
+        outputFloatBuffer[i] = audioFile->data[i];
+        outputFloatBuffer[i+1] = audioFile->data[i+1];
     }
 
     return 0;
 }
 
 void AudioFilePlayer::play(AudioFile *fileToPlay) {
-    if (fileToPlay == nullptr) {
-        throw InvalidAudioFileException();
+    int err = Pa_Initialize();
+    if (err != paNoError) {
+        throw new AudioEngineException(Pa_GetErrorText(err));
     }
 
-    RtAudio dac(RtAudio::LINUX_ALSA);
-    std::vector<unsigned int> deviceIds = dac.getDeviceIds();
+    PaStream* stream;
+    PaStreamParameters outputParameters = {
+        Pa_GetDefaultOutputDevice(),
+        2,
+        paFloat32,
+        Pa_GetDeviceInfo( Pa_GetDefaultOutputDevice() )->defaultLowOutputLatency,
+        NULL
+    };
 
-    if ( deviceIds.empty() ) {
-        throw NoAudioDevicesAvailableException();
-    }
-
-    RtAudio::StreamParameters streamParameters;
-    streamParameters.deviceId = dac.getDefaultOutputDevice();
-    streamParameters.nChannels = 2;
-
-    RtAudio::StreamOptions options;
-    options.flags = RTAUDIO_NONINTERLEAVED;
-
-    dac.openStream(
-        &streamParameters,
+    err = Pa_OpenStream(
+        &stream,
         NULL,
-        RTAUDIO_FLOAT32,
+        &outputParameters,
         this->sampleRate,
-        &(this->bufferSize),
-        &playback,
-        fileToPlay->data,
-        &options
+        this->bufferSize,
+        paClipOff,
+        callback,
+        fileToPlay
     );
+    if (err != paNoError) {
+        throw new AudioEngineException(Pa_GetErrorText(err));
+    }
 
-    dac.startStream();
-    std::cin.get();
+    err = Pa_StartStream(stream);
+    if (err != paNoError) {
+        throw new AudioEngineException(Pa_GetErrorText(err));
+    }
 
-    dac.closeStream();
+    Pa_Sleep(24000);
+
+    err = Pa_StopStream(stream);
+    if (err != paNoError) {
+        throw new AudioEngineException(Pa_GetErrorText(err));
+    }
+
+    err = Pa_CloseStream(stream);
+    if (err != paNoError) {
+        throw new AudioEngineException(Pa_GetErrorText(err));
+    }
+
+    Pa_Terminate();
 }
+
+
+
+
+

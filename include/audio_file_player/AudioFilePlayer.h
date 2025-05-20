@@ -5,9 +5,9 @@
 #ifndef AUDIOFILEPLAYER_H
 #define AUDIOFILEPLAYER_H
 
-#include <RtAudio.h>
 
 #include "AudioFile.h"
+
 
 class AudioFilePlayer {
     unsigned int sampleRate = 44100;
